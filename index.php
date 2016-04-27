@@ -60,10 +60,10 @@
 
       <script>
 
-         <?php echo affiche_tree(); ?>
+         <?php echo affiche_tree(); ?>   // Affichage en mode fichier JSON des données 
 
         var margin = 10,
-            diameter = 900;
+            diameter = 1000;   // diamètre du cercle "root"
 
         var color = d3.scale.linear()
             .domain([-1, 5])
@@ -102,8 +102,13 @@
             })
                 .on("click", function (d) {
                 if (focus !== d) zoom(d), d3.event.stopPropagation(); 
-                $('#volet').foundation('reflow');
 
+                /*$('#volet').foundation('reflow');*/
+                var query = document.querySelector('#volet');
+                /*$('#volet').toggle("fold",1000);*/
+                /*if($('#volet').is("ds")){ alert('oui'), alert('non');}*/
+                /*$('#volet').addClass("a.ouvrir");*/
+                $("#volet").slideToggle();               
             });
 
             var text = svg.selectAll("text")
@@ -210,9 +215,10 @@
       	<div id="volet">
       		<p> Mon titre </p>
       		<p> Mon texte </p>
-          <p> Ma vidéo </p>
+          	<p> Ma vidéo </p>
       		<a id ="ouv" href="#volet" class="ouvrir">Ouvrir </a>
       		<a href="#volet_clos" class="fermer">fermer</a>
+      	</div>
       	</div>
     </section>
 

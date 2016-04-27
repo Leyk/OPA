@@ -341,36 +341,38 @@ textarea {
 /* D3JS */
 
 .node {
+ 
+    cursor: pointer;   /* apparence de la souris sur les différents noeuds */
+    opacity: 0.7;  /* transparance assez élevée modérée pour plus de visibilité du texte */
+}
 
-    cursor: pointer;
-
-  background-color: #FFCC00;
-
+.node--root {
+    opacity: 1;  /* pas de transparance pour le root */
 }
 
 .node:hover {
+/* propriétés des contours au passage de la souris */
+    stroke: #000;    /* couleur */
 
-    stroke: #000;
-
-    stroke-width: 1.5px;
+    stroke-width: 2px;  /* taille */
 
 }
 
 .node--leaf {
 
-    fill: #FFCC00;
+    fill: #FFCC00; /* couleur des noeuds */
 
 }
 
 .label {
 
-    text-anchor: middle;
+    text-anchor: middle;  /* alignement du texte par rapport au milieu */
 
-    text-shadow: 0 1px 0 #FC0, 1px 0 0 #FC0, -1px 0 0 #FC0, 0 -1px 0 #FC0;
+    text-shadow: 2px 1px 0 #FEFEFE;  /* ombres (décalage vers la droite, vers le bas, valeur du flou, couleur) */
 
-    font-size: .8em;
+    font-size: 1.2em;   /* taille du text dans les cercles */
 
-    font-family: inherit;
+    font-family: "Arial Black";  /* grosse police pour lisibilité */
 
 }
 
