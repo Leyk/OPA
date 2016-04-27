@@ -11,6 +11,11 @@
     <link rel="stylesheet" href="css/foundation.css" />
     <link rel="stylesheet" href="css/fv.css" />
     <link rel="stylesheet" href="css/foundation-icons.css" />
+	<!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+
 
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="js/vendor/jquery.js"></script>
@@ -96,7 +101,9 @@
                 return d.children ? color(d.depth) : null;
             })
                 .on("click", function (d) {
-                if (focus !== d) zoom(d), d3.event.stopPropagation();
+                if (focus !== d) zoom(d), d3.event.stopPropagation(); 
+                $('#volet').foundation('reflow');
+
             });
 
             var text = svg.selectAll("text")
@@ -164,10 +171,16 @@
         //});
 
         d3.select(self.frameElement).style("height", diameter + "px");
+        </script>
+        <script>
+          $(".button-collapse").sideNav(); </script>
+       
+        <script src="//cdn.transifex.com/live.js"></script>
 
-      </script>
 
-      <div id="interac" class="row">
+     
+
+     <div id="interac" class="row">
         <ul id="interactions" class="hide">
           <li class="ajout">Ajouter une action<span class="fi-align-left"></span></li>
           <li class="ajout">Ajouter une rubrique<span class="fi-align-left"></span></li>
@@ -193,6 +206,14 @@
         </ul>
         <div id="boutonactions" class="ajout">InterActions<span class="fi-plus"></span></div>
       </div>
+        <div id="volet_clos">
+      	<div id="volet">
+      		<p> Mon titre </p>
+      		<p> Mon texte </p>
+          <p> Ma vidéo </p>
+      		<a id ="ouv" href="#volet" class="ouvrir">Ouvrir </a>
+      		<a href="#volet_clos" class="fermer">fermer</a>
+      	</div>
     </section>
 
     <footer>
@@ -202,7 +223,8 @@
         </div>
       </div>
     </footer>
-
-
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
   </body>
 </html>
