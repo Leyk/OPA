@@ -405,25 +405,25 @@ textarea {
 			padding: 10px;
 			background: #FEFEFE; color: #000000;	
 		}
-		#volet a.ouvrir,
+	
 		#volet a.fermer {
-			padding: 10px 25px;
+		  padding: 10px 25px;
 			background: #555;
 			color: #fff;
 			text-decoration: none;
 		}
 		#volet {
 			position: absolute;
-			left: -470px;  
+			left: 0px;  
 			-webkit-transition: all .5s ease-in;
 			-moz-transition: all .5s ease-in;
 			transition: all .5s ease-in;
 		}
-		#volet a.ouvrir,
+
 		#volet a.fermer {
 			position: absolute;
-			right: -88px;
-			top: 150px;
+			right: -75px;  /* positionnement par rapport au volet */
+			top: 27px;
 			-webkit-transform: rotate(270deg);
 			-moz-transform: rotate(270deg);
 			-o-transform: rotate(270deg);
@@ -431,18 +431,13 @@ textarea {
 			-moz-radius: 0 0 8px 8px;
 			border-radius: 0 0 8px 8px;
 		}
-		#volet a.fermer {
-			display: none;
-		}
 		#volet:target {
 			left: 10px;
 		}
 		#volet:target a.fermer {
 			display: block;
 		}
-		#volet:target a.ouvrir {
-			display: none;
-		}
+
 		#volet_clos:target #volet {
 			left: -470px;
 		}

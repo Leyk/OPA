@@ -13,8 +13,6 @@
     <link rel="stylesheet" href="css/foundation-icons.css" />
 	<!--Import Google Icon Font-->
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!--Import materialize.css-->
-    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
   </head>
   <body class="homecarto">
     
@@ -61,30 +59,23 @@
         </ul>
         <div id="boutonactions" class="ajout">InterActions<span class="fi-plus"></span></div>
       </div>
-        <div id="volet_clos">
-      	<div id="volet" style="display: none;">
-      		<p> Mon titre </p>
-      		<p> Mon texte </p>
-          	<p> Ma vidéo </p>
-      		<a id ="ouv" href="#volet" class="ouvrir">Ouvrir </a>
-      		<a href="#volet_clos" class="fermer">fermer</a>
-      	</div>
-      	</div>
     </section>
-    <footer>
-      <div class="row">
-        <div class="large-12 columns">
-          <h1 class="logo">Forces<span>Vives</span></h1>
-        </div>
-      </div>
-      <a href="#" data-reveal-id="myModal">Click Me For A Modal</a>
-      <div id="myModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-        <h2 id="modalTitle">Awesome. I have it.</h2>
-        <p class="lead">Your couch.  It is mine.</p>
-        <p>I'm a cool paragraph that lives inside of an even cooler modal. Wins!</p>
+
+      <a href='#' data-reveal-id="myVolet" data-reveal-ajax='true'>   
+      <div id="myVolet" class="hide reveal-modal medium" data-reveal>
+        <h2 id="modalTitle">TITRE</h2>
+        <p class="lead">Texte</p>
+        <p>Vidéo</p>
         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
       </div>
-    </footer>
+
+
+      <a href='fiche_action.php?id=22' data-reveal-id="test" data-reveal-ajax='true'>Test</a>
+      <div id="test" class="hide reveal-modal medium" data-reveal>
+        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+      </div>
+
+
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="js/foundation.min.js"></script>
@@ -133,7 +124,7 @@
         //d3.json("flare.json", function (error, root) {
             //if (error) return console.error(error);
 
-            var focus = root,
+            var focus = root,   /* focus initial sur le root (variable contenant tout l'arbre de données) */
                 nodes = pack.nodes(root),
                 view;
 
@@ -151,26 +142,38 @@
             })
                 .on("click", function (d) {
                 if (focus !== d){  /* si on n'est pas centré sur le focus, on zoom dessus */
+                
                   zoom(d);
                   d3.event.stopPropagation();  /* fonction qui permet le zoom */
                 }  
 
-                /*$('#volet').foundation('reflow');*/
-                var query = document.querySelector('#volet');
-                /*$('#volet').toggle("fold",1000);*/
-                /*if($('#volet').is("ds")){ alert('oui'), alert('non');}*/
-                $('#volet').css('display', 'block');
-                //$("#volet").slideToggle();               
+                /* ---- Permet de gérer l'affichage de la lightbox ---- */
+                var query = document.getElementById('myVolet');
+               /* var cl = query.getAttribute('class');*/
+                query.setAttribute('class','hide reveal-modal medium open');
+                var dt = query.setAttribute('href',"fiche_action.php?id=22");
+               /* alert(query.getAttribute('href'));*/
+                alert(root.children[1].name);
+                
+                $('#myVolet').css('display','inline');
+                $('#myVolet').css('opacity','1');
+                $('#myVolet').css('visibility','visible');
+                $('#myVolet').css('margin-left','-60%');
+                $('#myVolet').css('width','40%');
+                $('#myVolet').css('height','100%');
+                $('#myVolet').css('margin-top','7%');
+                $('#myVolet').css('margin-bottom','10%');
+                /* ---------------------------------------------------- */          
             });
 
-            var circleLeaf = svg.selectAll("circle.node--leaf")
+            /*var circleLeaf = svg.selectAll("circle.node--leaf")
                 .attr('data-tooltip', '')
                 .attr('aria-haspopup', 'true')
                 .attr('title', 'Test !!')
                 .attr("class", "node node--leaf has-tip")
                 .on("click", function (d) {
                 alert("Test");               
-            });
+            });*/
 
             var text = svg.selectAll("text")
                 .data(nodes)
@@ -244,4 +247,11 @@
        
         <script src="//cdn.transifex.com/live.js"></script>
   </body>
+  <footer>
+  <div class="row">
+    <div class="large-12 columns">
+      <h1 class="logo">Forces<span>Vives</span></h1>
+    </div>
+  </div>
+ </footer>
 </html>
