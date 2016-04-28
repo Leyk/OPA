@@ -15,28 +15,6 @@
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
-
-
-    <script src="http://d3js.org/d3.v3.min.js"></script>
-    <script src="js/vendor/jquery.js"></script>
-    <script src="js/foundation.min.js"></script>
-    <script src="js/foundation/foundation.reveal.js"></script>
-
-    <script>
-      $(document).foundation();
-
-      $(function() {
-
-        $("#boutonactions").click(function() {
-          $("#interactions").slideToggle();
-        });
-
-        $('header .logo').animate({ letterSpacing: '10px' }, 500);
-        setTimeout(function() { $('header .logo').removeAttr("style"); }, 1000);
-
-      });      
-    </script>
-
   </head>
   <body class="homecarto">
     
@@ -57,8 +35,76 @@
     </header>
     
      <section class="presentation">
+     <div id="interac" class="row">
+        <ul id="interactions" class="hide">
+          <li class="ajout">Ajouter une action<span class="fi-align-left"></span></li>
+          <li class="ajout">Ajouter une rubrique<span class="fi-align-left"></span></li>
+          <li class="ajout">Ajouter du contenu dans cette action<span class="fi-align-left"></span></li>
+          <li class="moderateur">Je suis modérateur de cette action<span class="fi-lock"></span></li>
+          <li class="moderateur">Je suis modérateur de cette rubrique<span class="fi-lock"></span></li>
+          <li class="contact">Contacter les forces vives de cette action<span class="fi-mail"></span></li>
+          <li class="contact">Contacter les forces vives de cette plateforme<span class="fi-mail"></span></li>
+          <li class="forcevive">Je suis force vive de cette action<span class="fi-male-female"></span></li>
+          <li class="forcevive">Je suis force vive de cette rubrique<span class="fi-male-female"></span></li>
+          <li class="forcevive">Je suis force vive de cette plateforme<span class="fi-male-female"></span></li>
+          <li class="finance">J'ai besoin de financement pour cette action<span class="fi-euro"></span></li>
+          <li class="finance">J'ai besoin de financement pour cette rubrique<span class="fi-euro"></span></li>
+          <li class="conseil">J'ai besoin de conseils pour cette action<span class="fi-lightbulb"></span></li>
+          <li class="conseil">J'ai besoin de conseils pour cette rubrique<span class="fi-lightbulb"></span></li>
+          <li class="aide">J'ai besoin d'aide pour cette action<span class="fi-anchor"></span></li>
+          <li class="aide">J'ai besoin d'aide pour cette rubrique<span class="fi-anchor"></span></li>
+          <li class="finance">Je finance cette action<span class="fi-folder"></span></li>
+          <li class="finance">Je finance cette rubrique<span class="fi-folder"></span></li>
+          <li class="finance">J'organise une réunion à distance<span class="fi-folder"></span></li>
+          <li class="finance">J'organise une discussion à distance<span class="fi-folder"></span></li>
+          <li class="moderateur">Je signale un problème<span class="fi-alert"></span></li>
+        </ul>
+        <div id="boutonactions" class="ajout">InterActions<span class="fi-plus"></span></div>
+      </div>
+        <div id="volet_clos">
+      	<div id="volet" style="display: none;">
+      		<p> Mon titre </p>
+      		<p> Mon texte </p>
+          	<p> Ma vidéo </p>
+      		<a id ="ouv" href="#volet" class="ouvrir">Ouvrir </a>
+      		<a href="#volet_clos" class="fermer">fermer</a>
+      	</div>
+      	</div>
+    </section>
+    <footer>
+      <div class="row">
+        <div class="large-12 columns">
+          <h1 class="logo">Forces<span>Vives</span></h1>
+        </div>
+      </div>
+      <a href="#" data-reveal-id="myModal">Click Me For A Modal</a>
+      <div id="myModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+        <h2 id="modalTitle">Awesome. I have it.</h2>
+        <p class="lead">Your couch.  It is mine.</p>
+        <p>I'm a cool paragraph that lives inside of an even cooler modal. Wins!</p>
+        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+      </div>
+    </footer>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="js/foundation.min.js"></script>
+    <script src="js/foundation/foundation.reveal.js"></script>
+    <script src="js/foundation/foundation.tooltip.js"></script>
+    <script>
+      $(document).foundation();
 
-      <script>
+      $(function() {
+
+        $("#boutonactions").click(function() {
+          $("#interactions").slideToggle();
+        });
+
+        $('header .logo').animate({ letterSpacing: '10px' }, 500);
+        setTimeout(function() { $('header .logo').removeAttr("style"); }, 1000);
+
+      });      
+    </script>
+     <script>
 
          <?php echo affiche_tree(); ?>   // Affichage en mode fichier JSON des données 
 
@@ -96,19 +142,34 @@
                 .enter().append("circle")
                 .attr("class", function (d) {
                 return d.parent ? d.children ? "node" : "node node--leaf" : "node node--root";
+          /* si le cercle a un parent mais pas d'enfant = feuille ; si enfant mais pas parent = root si enfant et parent = noeud */
+
             })
                 .style("fill", function (d) {
                 return d.children ? color(d.depth) : null;
+                /* si le cercle a un enfant on le colorie */
             })
                 .on("click", function (d) {
-                if (focus !== d) zoom(d), d3.event.stopPropagation(); 
+                if (focus !== d){  /* si on n'est pas centré sur le focus, on zoom dessus */
+                  zoom(d);
+                  d3.event.stopPropagation();  /* fonction qui permet le zoom */
+                }  
 
                 /*$('#volet').foundation('reflow');*/
                 var query = document.querySelector('#volet');
                 /*$('#volet').toggle("fold",1000);*/
                 /*if($('#volet').is("ds")){ alert('oui'), alert('non');}*/
-                /*$('#volet').addClass("a.ouvrir");*/
-                $("#volet").slideToggle();               
+                $('#volet').css('display', 'block');
+                //$("#volet").slideToggle();               
+            });
+
+            var circleLeaf = svg.selectAll("circle.node--leaf")
+                .attr('data-tooltip', '')
+                .attr('aria-haspopup', 'true')
+                .attr('title', 'Test !!')
+                .attr("class", "node node--leaf has-tip")
+                .on("click", function (d) {
+                alert("Test");               
             });
 
             var text = svg.selectAll("text")
@@ -128,8 +189,8 @@
             var node = svg.selectAll("circle,text");
 
             d3.select("body")
-                .style("background", color(-1))
-                .on("click", function () {
+                .style("background", color(-2))  /* change la couleur du fond avec une couleur proche du cercle root */
+                .on("click", function () {   /* zoom sur le cercle root si on clique dessus */
                   zoom(root);
                 });
 
@@ -178,59 +239,9 @@
         d3.select(self.frameElement).style("height", diameter + "px");
         </script>
         <script>
-          $(".button-collapse").sideNav(); </script>
+          $(".button-collapse").sideNav();
+          $(document).foundation('tooltip', 'reflow'); </script>
        
         <script src="//cdn.transifex.com/live.js"></script>
-
-
-     
-
-     <div id="interac" class="row">
-        <ul id="interactions" class="hide">
-          <li class="ajout">Ajouter une action<span class="fi-align-left"></span></li>
-          <li class="ajout">Ajouter une rubrique<span class="fi-align-left"></span></li>
-          <li class="ajout">Ajouter du contenu dans cette action<span class="fi-align-left"></span></li>
-          <li class="moderateur">Je suis modérateur de cette action<span class="fi-lock"></span></li>
-          <li class="moderateur">Je suis modérateur de cette rubrique<span class="fi-lock"></span></li>
-          <li class="contact">Contacter les forces vives de cette action<span class="fi-mail"></span></li>
-          <li class="contact">Contacter les forces vives de cette plateforme<span class="fi-mail"></span></li>
-          <li class="forcevive">Je suis force vive de cette action<span class="fi-male-female"></span></li>
-          <li class="forcevive">Je suis force vive de cette rubrique<span class="fi-male-female"></span></li>
-          <li class="forcevive">Je suis force vive de cette plateforme<span class="fi-male-female"></span></li>
-          <li class="finance">J'ai besoin de financement pour cette action<span class="fi-euro"></span></li>
-          <li class="finance">J'ai besoin de financement pour cette rubrique<span class="fi-euro"></span></li>
-          <li class="conseil">J'ai besoin de conseils pour cette action<span class="fi-lightbulb"></span></li>
-          <li class="conseil">J'ai besoin de conseils pour cette rubrique<span class="fi-lightbulb"></span></li>
-          <li class="aide">J'ai besoin d'aide pour cette action<span class="fi-anchor"></span></li>
-          <li class="aide">J'ai besoin d'aide pour cette rubrique<span class="fi-anchor"></span></li>
-          <li class="finance">Je finance cette action<span class="fi-folder"></span></li>
-          <li class="finance">Je finance cette rubrique<span class="fi-folder"></span></li>
-          <li class="finance">J'organise une réunion à distance<span class="fi-folder"></span></li>
-          <li class="finance">J'organise une discussion à distance<span class="fi-folder"></span></li>
-          <li class="moderateur">Je signale un problème<span class="fi-alert"></span></li>
-        </ul>
-        <div id="boutonactions" class="ajout">InterActions<span class="fi-plus"></span></div>
-      </div>
-        <div id="volet_clos">
-      	<div id="volet">
-      		<p> Mon titre </p>
-      		<p> Mon texte </p>
-          	<p> Ma vidéo </p>
-      		<a id ="ouv" href="#volet" class="ouvrir">Ouvrir </a>
-      		<a href="#volet_clos" class="fermer">fermer</a>
-      	</div>
-      	</div>
-    </section>
-
-    <footer>
-      <div class="row">
-        <div class="large-12 columns">
-          <h1 class="logo">Forces<span>Vives</span></h1>
-        </div>
-      </div>
-    </footer>
-    <!--Import jQuery before materialize.js-->
-    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script type="text/javascript" src="js/materialize.min.js"></script>
   </body>
 </html>

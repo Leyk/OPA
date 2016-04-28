@@ -364,6 +364,12 @@ textarea {
 
 }
 
+.node--leaf:hover {
+
+    fill: #000; /* couleur des noeuds */
+
+}
+
 .label {
 
     text-anchor: middle;  /* alignement du texte par rapport au milieu */
