@@ -61,16 +61,16 @@
       </div>
     </section>
 
-      <a href='#' data-reveal-id="myVolet" data-reveal-ajax='true'>   
+      <a href='fiche_action.php?id=22' data-reveal-id="myVolet" data-reveal-ajax='true'> 
       <div id="myVolet" class="hide reveal-modal medium" data-reveal>
-        <h2 id="modalTitle">TITRE</h2>
+        <!--<h2 id="modalTitle">TITRE</h2>
         <p class="lead">Texte</p>
-        <p>Vidéo</p>
+        <p>Vidéo</p>-->
         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
       </div>
 
 
-      <a href='fiche_action.php?id=22' data-reveal-id="test" data-reveal-ajax='true'>Test</a>
+     <a href='fiche_action.php?id=22' data-reveal-id="test" data-reveal-ajax='true'>Test</a>
       <div id="test" class="hide reveal-modal medium" data-reveal>
         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
       </div>
@@ -140,40 +140,41 @@
                 return d.children ? color(d.depth) : null;
                 /* si le cercle a un enfant on le colorie */
             })
-                .on("click", function (d) {
-                if (focus !== d){  /* si on n'est pas centré sur le focus, on zoom dessus */
                 
-                  zoom(d);
-                  d3.event.stopPropagation();  /* fonction qui permet le zoom */
-                }  
-
-                /* ---- Permet de gérer l'affichage de la lightbox ---- */
-                var query = document.getElementById('myVolet');
-               /* var cl = query.getAttribute('class');*/
-                query.setAttribute('class','hide reveal-modal medium open');
-                var dt = query.setAttribute('href',"fiche_action.php?id=22");
-               /* alert(query.getAttribute('href'));*/
-                alert(root.children[1].name);
-                
-                $('#myVolet').css('display','inline');
-                $('#myVolet').css('opacity','1');
-                $('#myVolet').css('visibility','visible');
-                $('#myVolet').css('margin-left','-60%');
-                $('#myVolet').css('width','40%');
-                $('#myVolet').css('height','100%');
-                $('#myVolet').css('margin-top','7%');
-                $('#myVolet').css('margin-bottom','10%');
-                /* ---------------------------------------------------- */          
+                .on("click", function (d,i) {  /* i = place dans l'arbre Json (0 = forcesvives = root)*/
+                  if(d3.select(this).classed("node--leaf")){
+                    if (focus !== d){  /* si on n'est pas centré sur le focus, on zoom dessus */
+                      zoom(d.parent);
+                      d3.event.stopPropagation();  /* fonction qui permet le zoom */
+                    }  
+                    if(d.url !== undefined) {
+                      /*window.location = d.url;*/ 
+                      /* ---- Permet de gérer l'affichage de la lightbox ---- */
+                      /*var query = document.getElementById('myVolet');
+                      query.setAttribute('class','hide reveal-modal medium open');           
+                      $('#myVolet').css('display','inline');
+                      $('#myVolet').css('visibility','visible');*/
+                      /* ---------------------------------------------------- */ 
+                    }
+                  }
+                  else {
+                    if (focus !== d){  /* si on n'est pas centré sur le focus, on zoom dessus */
+                      zoom(d);
+                      d3.event.stopPropagation();  
+                    }  
+                  }
             });
 
-            /*var circleLeaf = svg.selectAll("circle.node--leaf")
-                .attr('data-tooltip', '')
-                .attr('aria-haspopup', 'true')
-                .attr('title', 'Test !!')
-                .attr("class", "node node--leaf has-tip")
-                .on("click", function (d) {
-                alert("Test");               
-            });*/
+            /* permet d'affecter les urls pour chaque cercle feuille (action) */
+            circle.each(function(d) {
+              var thisNode = d3.select(this);
+              if (!d.children) {   /* si c'est une feuille */
+                if(d.url !== undefined) {
+                  thisNode.append("a")
+                  .attr("xlink:href",function(d) { return d.url;}) 
+                }            
+              }
+            })
 
             var text = svg.selectAll("text")
                 .data(nodes)
