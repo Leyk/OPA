@@ -108,17 +108,17 @@
             .interpolate(d3.interpolateHcl);
 
         var pack = d3.layout.pack()
-            .padding(2)
-            .size([diameter - margin, diameter - margin])
+            .padding(7)   /* espacement entre les cercles */
+            .size([2000, diameter - margin])
             .value(function (d) {
-            return d.size;
+            return d.size; /* taille des feuilles */
         });
 
         var svg = d3.select("body").append("svg")
             .attr("width", diameter)
             .attr("height", diameter)
             .attr("id","carto")
-            .append("g")
+            .append("g")  /* pour grouper */
             .attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
 
         //d3.json("flare.json", function (error, root) {
@@ -139,9 +139,10 @@
                 .style("fill", function (d) {
                 return d.children ? color(d.depth) : null;
                 /* si le cercle a un enfant on le colorie */
-            })
-                
-                .on("click", function (d,i) {  /* i = place dans l'arbre Json (0 = forcesvives = root)*/
+            }) 
+                .on("click", clickFct) 
+                  
+                function clickFct(d,i) {  /* i = place dans l'arbre Json (0 = forcesvives = root)*/
                   if(d3.select(this).classed("node--leaf")){
                     if (focus !== d){  /* si on n'est pas centré sur le focus, on zoom dessus */
                       zoom(d.parent);
@@ -150,10 +151,10 @@
                     if(d.url !== undefined) {
                       /*window.location = d.url;*/ 
                       /* ---- Permet de gérer l'affichage de la lightbox ---- */
-                      /*var query = document.getElementById('myVolet');
+                      var query = document.getElementById('myVolet');
                       query.setAttribute('class','hide reveal-modal medium open');           
                       $('#myVolet').css('display','inline');
-                      $('#myVolet').css('visibility','visible');*/
+                      $('#myVolet').css('visibility','visible');
                       /* ---------------------------------------------------- */ 
                     }
                   }
@@ -163,18 +164,7 @@
                       d3.event.stopPropagation();  
                     }  
                   }
-            });
-
-            /* permet d'affecter les urls pour chaque cercle feuille (action) */
-            circle.each(function(d) {
-              var thisNode = d3.select(this);
-              if (!d.children) {   /* si c'est une feuille */
-                if(d.url !== undefined) {
-                  thisNode.append("a")
-                  .attr("xlink:href",function(d) { return d.url;}) 
-                }            
-              }
-            })
+                }
 
             var text = svg.selectAll("text")
                 .data(nodes)
@@ -191,6 +181,32 @@
             });
 
             var node = svg.selectAll("circle,text");
+
+             /* permet d'affecter les urls pour chaque cercle feuille (action) */
+            node.each(function(d) {
+              var thisNode = d3.select(this);
+              if (!d.children) {   /* si c'est une feuille */
+                if(d.url !== undefined) {
+                  thisNode.append("a")
+                  .attr("xlink:href",function(d) { return d.url;})
+                  .append("text")
+                    .attr("class","label")
+                    .attr("dx", 8)
+                    .attr("dy", 3)
+                    .attr("text-anchor","start")
+                    .text(function(d){return d.name;})
+                    ;
+                }            
+              }
+              else {
+                thisNode.append("text")
+                  .attr("class","label")
+                  .attr("dx", -8)
+                  .attr("dy", 3)
+                  .attr("text-anchor","end")
+                  .text(function(d){return d.name;})
+              }
+            });
 
             d3.select("body")
                 .style("background", color(-2))  /* change la couleur du fond avec une couleur proche du cercle root */

@@ -366,7 +366,7 @@ textarea {
 
 .node--leaf:hover {
 
-    fill: #000; /* couleur des noeuds */
+    fill: #F28101; /* couleur des noeuds au passage souris*/
 
 }
 
@@ -374,13 +374,9 @@ textarea {
 
     text-anchor: middle;  /* alignement du texte par rapport au milieu */
 
-    text-shadow: 2px 1px 0 #FEFEFE;  /* ombres (décalage vers la droite, vers le bas, valeur du flou, couleur) */
-
-    font-size: 1.2em;   /* taille du text dans les cercles */
-
-    font-family: "Arial Black";  /* grosse police pour lisibilité */
-
-
+    font: 1.2em "Arial Black"; /* grosse police pour lisibilité */
+ 
+    text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff;  /* ombres (décalage vers la droite, vers le bas, valeur du flou, couleur) */
 }
 
 .label, .node--root {
@@ -389,7 +385,7 @@ textarea {
 
 }
 
-.label, .node--leaf {
+.node--leaf {
   pointer-events: all;
 }
 
