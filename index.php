@@ -193,7 +193,7 @@
             d3.select("body")
                 .style("background", color(-2))  /* change la couleur du fond avec une couleur proche du cercle root */
                 .on("click", function () {   /* zoom sur le cercle root si on clique dessus ou à l'exterieur de tout noeud*/
-                  /*zoom(root);*/
+                 /* zoom(root);*/
                 });
 
             zoomTo([root.x, root.y, root.r * 2 + margin]);
