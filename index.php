@@ -109,7 +109,7 @@
 
         var pack = d3.layout.pack()
             .padding(7)   /* espacement entre les cercles */
-            .size([2000, diameter - margin])
+            .size([diameter - margin, diameter - margin])
             .value(function (d) {
             return d.size; /* taille des feuilles */
         });
@@ -144,6 +144,7 @@
                   
                 function clickFct(d,i) {  /* i = place dans l'arbre Json (0 = forcesvives = root)*/
                   if(d3.select(this).classed("node--leaf")){
+                    alert(focus);
                     if (focus !== d){  /* si on n'est pas centré sur le focus, on zoom dessus */
                       zoom(d.parent);
                       d3.event.stopPropagation();  /* fonction qui permet le zoom */
@@ -151,10 +152,10 @@
                     if(d.url !== undefined) {
                       /*window.location = d.url;*/ 
                       /* ---- Permet de gérer l'affichage de la lightbox ---- */
-                      var query = document.getElementById('myVolet');
+                      /*var query = document.getElementById('myVolet');
                       query.setAttribute('class','hide reveal-modal medium open');           
                       $('#myVolet').css('display','inline');
-                      $('#myVolet').css('visibility','visible');
+                      $('#myVolet').css('visibility','visible');/*
                       /* ---------------------------------------------------- */ 
                     }
                   }
@@ -176,35 +177,30 @@
                 .style("display", function (d) {
                 return d.parent === root ? null : "none";
             })
-                .text(function (d) {
-                return d.name;
+                .text(function (d) {  /* on insère le texte seulement pour les noeuds non feuilles */
+                  var thisNode = d3.select(this);
+                  if(d.children){
+                    return d.name;
+                  }
+                
             });
 
             var node = svg.selectAll("circle,text");
 
-             /* permet d'affecter les urls pour chaque cercle feuille (action) */
+/*<a href='fiche_action.php?id=".$r["id"]."' data-reveal-id='lghtbox' data-reveal-ajax='true'>
+        ".$r["initiative_titre"]."
+      </a>*/
+             /* permet d'affecter les text en hyperlink pour chaque noeud feuille (action) */
             node.each(function(d) {
               var thisNode = d3.select(this);
               if (!d.children) {   /* si c'est une feuille */
                 if(d.url !== undefined) {
                   thisNode.append("a")
-                  .attr("xlink:href",function(d) { return d.url;})
-                  .append("text")
-                    .attr("class","label")
-                    .attr("dx", 8)
-                    .attr("dy", 3)
-                    .attr("text-anchor","start")
-                    .text(function(d){return d.name;})
-                    ;
+                  .attr('xlink:href',function(d) { return d.url ;})
+                  .attr('data-reveal-id','myVolet')
+                  .attr('data-reveal-ajax','true')
+                    .text(function(d){return d.name;});
                 }            
-              }
-              else {
-                thisNode.append("text")
-                  .attr("class","label")
-                  .attr("dx", -8)
-                  .attr("dy", 3)
-                  .attr("text-anchor","end")
-                  .text(function(d){return d.name;})
               }
             });
 

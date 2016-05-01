@@ -361,6 +361,8 @@ textarea {
 .node--leaf {
 
     fill: #FFCC00; /* couleur des noeuds */
+    stroke: #000;    /* couleur contour */
+    stroke-width: 0.5px;  /* taille contour */
 
 }
 
@@ -379,7 +381,7 @@ textarea {
     text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff;  /* ombres (décalage vers la droite, vers le bas, valeur du flou, couleur) */
 }
 
-.label, .node--root {
+/*.label,*/ .node--root {
 
     pointer-events: none;
 
