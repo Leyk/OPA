@@ -147,7 +147,7 @@
                     }  
                   }
                   else {
-                    if (focus !== d){  /* si on n'est pas centré sur le focus, on zoom dessus */
+                   if (focus !== d){  /* si on n'est pas centré sur le focus, on zoom dessus */
                       zoom(d);
                       d3.event.stopPropagation();  
                     }  
@@ -192,8 +192,8 @@
 
             d3.select("body")
                 .style("background", color(-2))  /* change la couleur du fond avec une couleur proche du cercle root */
-                .on("click", function () {   /* zoom sur le cercle root si on clique dessus */
-                  zoom(root);
+                .on("click", function () {   /* zoom sur le cercle root si on clique dessus ou à l'exterieur de tout noeud*/
+                  /*zoom(root);*/
                 });
 
             zoomTo([root.x, root.y, root.r * 2 + margin]);

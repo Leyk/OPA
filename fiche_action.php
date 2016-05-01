@@ -121,3 +121,11 @@ if ($nb_actions) {
 }
 
 ?>
+
+<div class="large-5 columns">
+  <fieldset>
+    <legend> Contact </legend>
+    <input type="text" id="posteur_nom" name="posteur_nom" placeholder="Votre nom">
+    <input type="text" id="posteur_email" name="posteur_email" placeholder="Votre courriel *">
+  </fieldset>
+</div>
