@@ -61,20 +61,9 @@
       </div>
     </section>
 
-      <a href='fiche_action.php?id=22' data-reveal-id="myVolet" data-reveal-ajax='true'> 
       <div id="myVolet" class="hide reveal-modal medium" data-reveal>
-        <!--<h2 id="modalTitle">TITRE</h2>
-        <p class="lead">Texte</p>
-        <p>Vidéo</p>-->
         <a class="close-reveal-modal" aria-label="Close">&#215;</a>
       </div>
-
-
-     <a href='fiche_action.php?id=22' data-reveal-id="test" data-reveal-ajax='true'>Test</a>
-      <div id="test" class="hide reveal-modal medium" data-reveal>
-        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
-      </div>
-
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="http://d3js.org/d3.v3.min.js"></script>
@@ -130,7 +119,15 @@
 
             var circle = svg.selectAll("circle")
                 .data(nodes)
-                .enter().append("circle")
+                .enter()/*.append("a")
+                .attr('xlink:href',function(d) { return d.url ;})
+                .attr('data-reveal-id', function(d) {
+                  return d.parent ? d.children ? "" : "myVolet" : "";
+                })
+                .attr('data-reveal-ajax',function(d){
+                  return d.parent ? d.children ? "" : "true" : "";
+                })*/
+                .append("circle")
                 .attr("class", function (d) {
                 return d.parent ? d.children ? "node" : "node node--leaf" : "node node--root";
           /* si le cercle a un parent mais pas d'enfant = feuille ; si enfant mais pas parent = root si enfant et parent = noeud */
@@ -141,23 +138,13 @@
                 /* si le cercle a un enfant on le colorie */
             }) 
                 .on("click", clickFct) 
-                  
+
                 function clickFct(d,i) {  /* i = place dans l'arbre Json (0 = forcesvives = root)*/
                   if(d3.select(this).classed("node--leaf")){
-                    alert(focus);
                     if (focus !== d){  /* si on n'est pas centré sur le focus, on zoom dessus */
                       zoom(d.parent);
                       d3.event.stopPropagation();  /* fonction qui permet le zoom */
                     }  
-                    if(d.url !== undefined) {
-                      /*window.location = d.url;*/ 
-                      /* ---- Permet de gérer l'affichage de la lightbox ---- */
-                      /*var query = document.getElementById('myVolet');
-                      query.setAttribute('class','hide reveal-modal medium open');           
-                      $('#myVolet').css('display','inline');
-                      $('#myVolet').css('visibility','visible');/*
-                      /* ---------------------------------------------------- */ 
-                    }
                   }
                   else {
                     if (focus !== d){  /* si on n'est pas centré sur le focus, on zoom dessus */
@@ -187,11 +174,8 @@
 
             var node = svg.selectAll("circle,text");
 
-/*<a href='fiche_action.php?id=".$r["id"]."' data-reveal-id='lghtbox' data-reveal-ajax='true'>
-        ".$r["initiative_titre"]."
-      </a>*/
              /* permet d'affecter les text en hyperlink pour chaque noeud feuille (action) */
-            node.each(function(d) {
+           node.each(function(d) {
               var thisNode = d3.select(this);
               if (!d.children) {   /* si c'est une feuille */
                 if(d.url !== undefined) {
@@ -200,6 +184,8 @@
                   .attr('data-reveal-id','myVolet')
                   .attr('data-reveal-ajax','true')
                     .text(function(d){return d.name;});
+                    /*alert(thisNode.data-reveal-id);*/
+                   /* thisNode.setAttribute('data-reveal-ajax','true')*/
                 }            
               }
             });

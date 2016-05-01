@@ -381,7 +381,7 @@ textarea {
     text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff;  /* ombres (décalage vers la droite, vers le bas, valeur du flou, couleur) */
 }
 
-/*.label,*/ .node--root {
+.node--root {
 
     pointer-events: none;
 
