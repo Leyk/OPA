@@ -156,7 +156,7 @@
 
             var text = svg.selectAll("text")
                 .data(nodes)
-                .enter().append("textarea")
+                .enter().append("text")
                 .attr("class", "label")
                 .style("fill-opacity", function (d) {
                 return d.parent === root ? 1 : 0; /* opacité transparent si non feuille */
