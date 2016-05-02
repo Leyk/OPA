@@ -120,12 +120,8 @@ if ($nb_actions) {
   echo '<a class="close-reveal-modal">&#215;</a>';
 }
 
+require_once("form_contact.php");
+
 ?>
 
-<div class="large-5 columns">
-  <fieldset>
-    <legend> Contact </legend>
-    <input type="text" id="posteur_nom" name="posteur_nom" placeholder="Votre nom">
-    <input type="text" id="posteur_email" name="posteur_email" placeholder="Votre courriel *">
-  </fieldset>
-</div>
+

@@ -119,14 +119,14 @@
 
             var circle = svg.selectAll("circle")
                 .data(nodes)
-                .enter()/*.append("a")
+                .enter().append("a")
                 .attr('xlink:href',function(d) { return d.url ;})
                 .attr('data-reveal-id', function(d) {
                   return d.parent ? d.children ? "" : "myVolet" : "";
                 })
                 .attr('data-reveal-ajax',function(d){
                   return d.parent ? d.children ? "" : "true" : "";
-                })*/
+                })
                 .append("circle")
                 .attr("class", function (d) {
                 return d.parent ? d.children ? "node" : "node node--leaf" : "node node--root";
@@ -156,10 +156,10 @@
 
             var text = svg.selectAll("text")
                 .data(nodes)
-                .enter().append("text")
+                .enter().append("textarea")
                 .attr("class", "label")
                 .style("fill-opacity", function (d) {
-                return d.parent === root ? 1 : 0;
+                return d.parent === root ? 1 : 0; /* opacité transparent si non feuille */
             })
                 .style("display", function (d) {
                 return d.parent === root ? null : "none";
@@ -236,12 +236,9 @@
                     return d.r * k;
                 });
             }
-        //});
-
         d3.select(self.frameElement).style("height", diameter + "px");
         </script>
         <script>
-          $(".button-collapse").sideNav();
           $(document).foundation('tooltip', 'reflow'); </script>
        
         <script src="//cdn.transifex.com/live.js"></script>
