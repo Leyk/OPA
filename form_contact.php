@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="css/foundation-icons.css" />
   </head>
   <body>
+    <div id="erreur">
+      <p id="texterreur">Les champs suivants ne sont pas correctement remplis</p>
+    </div>
     <form id="formcontact">
       <div id="formcontact-intro" class="row">
         <div class="large-10 columns">
@@ -30,11 +33,11 @@
             <input type="text" id="posteur_nom" name="posteur_nom" placeholder="Votre nom *" class="champ">
             <input type="text" id="posteur_prenom" name="posteur_prenom" placeholder="Votre prénom" class="champ">
             <input type="text" id="posteur_email" name="posteur_email" placeholder="Votre courriel *" class="champ">
-            <textarea name="posteur_message" placeholder="Votre message *" class="champ"></textarea>
+            <textarea name="posteur_message" id="posteur_message" placeholder="Votre message *" class="champ"></textarea>
           </fieldset>
           <div class="row">
             <div class="large-10 text-center">
-              <button type="submit">Envoyer</button>          
+              <button type="submit" id="envoyer">Envoyer</button>          
             </div>
           </div>
         </div>
@@ -47,13 +50,20 @@
     <script>
     $(document).foundation();
 
-    $(function(){
-
+    $(document).ready(function(){
+      var $nom_personne = $('#posteur_nom'),
+          $prenom_personne = $('#posteur_prenom'),
+          $mail_personne = $('#posteur_email'),
+          $msg_personne = $('#posteur_message'),
+          $champ = $('.champ'),
+          $erreur = $('#erreur'),
+          $envoi = $('#envoyer');
       // Ajustement de la taille des textarea
      /* $('textarea').autosize();*/
 
       // affichage du formulaire
       $('#dest_msg').change(function(){
+        var $dest = $('#dest_msg option:selected').val();
         $('html, body').animate({ /* ajuste l'écran sur l'ouverture du formulaire */
               scrollTop: $("#formcontact").offset().top
           }, 1000);
@@ -63,29 +73,56 @@
             $('#formcontact-contenu').slideDown(); /* ouvre le corps du formulaire */
       });
 
+      $champ.keyup(function(){
+        $(this).css({
+          borderColor:'#CCCCCC'
+        })
+      });
+
       // soumission du formulaire
-      $('$formcontact').on('submit', function(e) {
-        alert("ok");
+      $envoi.click(function(e) {
         e.preventDefault(); // on annule la fonction par défaut du bouton d'envoi
-        var nom_personne = $('#posteur_nom').val();
-        var prenom_personne = $('#posteur_prenom').val();
-        var mail_personne = $('#posteur_email').val();
-        var msg_personne = $('#posteur_message').val();
+        $erreur.css('display','none');
+        var nom = verifier($nom_personne);
+        var mail = verifier($mail_personne);
+        var msg = verifier($msg_personne);
+        var mailok = validateEmail($mail_personne);
 
-        if (nom_personne === '' || mail_personne === '' || msg_personne === '' ){
-          $('#messager').removeClass().addClass("alert-box radius").addClass("alert").html("Les champs marqués * doivent êtres remplis.").slideDown().delay(3000).slideUp();
+        if(nom && mail && msg && mailok){
+          alert("ok");
+          /* $.ajax({
+          url: 'traitement_formulaire.php', // ressource ciblée
+          type: 'POST',  // type de la requete HTTP
+          data : 'dest='+ $dest +'&email=' + $mail_personne.val() +'&contenu='+ $msg_personne.val() +'&idproj=' + $id,   // ligne A CHECK
+          dataType : 'html' // le type de données à recevoir
+        });*/
         }
-        else {
-          /*$.ajax({
-            url: $this.attr('action'),
-            type: $this.attr('method'),
-            data: $this.serialize(),
-            success: 
-          })*/
+      });
+
+      function verifier(champ){  // vérification remplissage des champs
+        var bool = true;
+        if(champ.val() == ""){
+          $erreur.css('display','block');
+          champ.css({
+            borderColor:'red'
+          });
+          bool = false;
+        } 
+        return bool;
+      }
+
+      function validateEmail(email) {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        var bool = re.test(email.val());
+        if(!bool){
+          $erreur.css('display','block');
+          email.css({
+            borderColor:'red'
+          });
         }
-      })
+        return bool;
+      }
     });
-
     </script>
   </body>
 </html>

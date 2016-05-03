@@ -383,7 +383,7 @@ textarea {
 
 .node--root {
 
-    pointer-events: none;
+    pointer-events: all;
 
 }
 
@@ -411,12 +411,18 @@ textarea {
   margin-bottom: 10%;
   position:absolute;
   text-align: justify;
+  overflow: scroll;
 }
 
 .reveal-modal-bg {
   opacity: 0;
 }
 
+#erreur {
+  display: none;
+  color:red;
+  text-align: center;
+}
 /*element.style{
   top:100px;
 }*/
