@@ -403,13 +403,13 @@ textarea {
 }
 		
 #myVolet {
-  margin-left: -50%;
+  /*margin-left: -50%;
   opacity: 1;
   width:40%;
   height:100%;
   margin-top: 7%;
-  margin-bottom: 10%;
-  position:absolute;
+  margin-bottom: 10%;*/
+  position:fixed;
   text-align: justify;
   overflow: scroll;
 }

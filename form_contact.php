@@ -44,6 +44,16 @@
         </div>
       </div> <!-- formaction-contenu -->
     </form>
+
+    <?php 
+    if(isset($mail_initiateur)){ // Vérification si une adresse mail est dispo pour contacter l'initiateur d'un projet
+      $existMail = true ;
+    } else {
+       $existMail = false;
+    }
+    ?>
+
+  <!--  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script> -->
     <script src="js/vendor/jquery.js"></script>
     <script src="js/foundation.min.js"></script>
     <script src="js/foundation/foundation.reveal.js"></script>
@@ -61,6 +71,7 @@
           $resultat = $('#resultat'),
           $envoi = $('#envoyer'),
           $id = '<?php echo $id; ?>';
+          $existe_mail = '<?php echo $existMail; ?>';
           $dest = $('#dest_msg option:selected').val();
       // Ajustement de la taille des textarea
      /* $('textarea').autosize();*/
@@ -68,13 +79,26 @@
       // affichage du formulaire
       $('#dest_msg').change(function(){
         $dest = $('#dest_msg option:selected').val();
+        $erreur.css('display','none');
+        $resultat.css('display','none');
         $('html, body').animate({ /* ajuste l'écran sur l'ouverture du formulaire */
-              scrollTop: $("#formcontact").offset().top
-          }, 1000);
-        if ($(this).val()==="")
+          scrollTop: $("#formcontact").offset().top
+        }, 1000);
+        if($(this).val() === "initiateur"){
+          if(!$existe_mail){
+            $erreur.css('display','block');
+            $erreur.html("<p>Il n'y a malheureusement aucune adresse mail valide pour cet initiateur ! </p>");
             $('#formcontact-contenu').slideUp(); /* ferme le corps du formulaire */
-          else
+          } else {
             $('#formcontact-contenu').slideDown(); /* ouvre le corps du formulaire */
+          }
+        }
+        else{
+          if ($(this).val()==="")
+              $('#formcontact-contenu').slideUp(); /* ferme le corps du formulaire */
+            else
+              $('#formcontact-contenu').slideDown(); /* ouvre le corps du formulaire */
+        }
       });
 
       $champ.keyup(function(){
@@ -105,31 +129,18 @@
 	          	destinataire : $dest
 	          },
 	          function(data){ // fonction qui va gérer le retour
-	          	if(data == 'Success'){
+	          	if(data == "Success"){
 	          		$resultat.html("<p>Le mail a été envoyé avec succès ! </p>");
 	          		$resultat.css('display','block');
 	          	}
 	          	else{
+	          		alert(data);
 	          		$resultat.html("<p>Erreur...</p>");
 	          		$resultat.css('display','block');
 	          	}
 	          },
 	          'text' // Format des données reçues : pour recevoir "Success" ou "Failed"
 	         );
-
-	         // data : 'dest='+ $dest +'&email=' + $mail_personne.val() +'&contenu='+ $msg_personne.val() +'&idproj=' + $id,   // ligne A CHECK
-	         
-	          /*success : function(code_html, statut){
-	          	//$(code_html).appendTo("#commentaires");
-	          },
-
-	          error : function(resultat, statut, erreur){
-
-	          },
-
-	          complete : function(resultat, statut){
-
-	          }*/
         }
       });
 

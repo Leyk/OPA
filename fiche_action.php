@@ -107,6 +107,7 @@ if ($nb_actions) {
         if (!empty($r["posteur_nom"]))
           echo "<strong>Coordonnées de l'initiateur :</strong><br/>".$r["posteur_nom"]."<br/>";
         if (!empty($r["posteur_email"]))
+          $mail_initiateur = $r["posteur_email"];
           echo "<a href='mailto:".$r["posteur_email"]."'>".$r["posteur_email"]."</a><br/>";
         if (!empty($r["posteur_siteweb"]))
           echo "<strong>Site : </strong><a href='".(stristr($r["posteur_siteweb"],'http://')?"":"http://").$r["posteur_siteweb"]."' target='_blank'>".$r["posteur_siteweb"]."</a><br/>";

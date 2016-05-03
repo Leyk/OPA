@@ -10,14 +10,16 @@ if (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#i", $posteur_email)
   $erreurmsg = "Adresse email invalide.";  
 }*/
 
-
-/*if (isset($_POST['email']) && isset($_POST['contenu']) && isset($_POST['idproj'])){
-	$posteur_email = $_POST['email'];
-	$posteur_msg = $_POST['contenu'];
-	$idproj = $_POST['idproj'];
+if (isset($_POST['destinataire']) && isset($_POST['nom']) && isset($_POST['mail']) && isset($_POST['message']) && isset($_POST['id'])){
+	$destinataire = $_POST['destinataire'];
+	$posteur_nom = $_POST['nom'];
+	$posteur_email = $_POST['mail'];
+	$posteur_msg = $_POST['message'];
+	$idproj = $_POST['id'];
 }
 else {
 	$erreur = "Erreur formulaire";
+	echo $erreur;
 }
 
 if(!isset($erreur)){
@@ -27,16 +29,10 @@ if(!isset($erreur)){
 	$rs->execute() or die ("Erreur : ".__LINE__." : ".$sql);
 	$nb_lignes = $rs->rowCount();
 	if($nb_lignes){
-		echo "Success";
+		$res = $rs->fetch();
+		echo "Success ".$res[0];
 	} else{
 		echo "Failed";
 	}
-}*/
-
-if(true){
-	echo "Success";
-} else {
-	echo "Failed";
 }
-
 ?>

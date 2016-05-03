@@ -62,7 +62,7 @@
     </section>
 
       <div id="myVolet" class="hide reveal-modal medium" data-reveal>
-        <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+       <!-- <a class="close-reveal-modal" aria-label="Close">&#215;</a>-->
       </div>
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
