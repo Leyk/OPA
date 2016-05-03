@@ -2,7 +2,7 @@
 include "inc/_var_fv.php";
 
 
-
+unset($erreur);
 /*$posteur_email = preg_replace("/[^a-z].-_@/i",'', strtolower($_POST["posteur_email"]));
 if (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#i", $posteur_email))
 {
@@ -11,7 +11,7 @@ if (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#i", $posteur_email)
 }*/
 
 
-if (isset($_POST['email']) && isset($_POST['contenu']) && isset($_POST['idproj'])){
+/*if (isset($_POST['email']) && isset($_POST['contenu']) && isset($_POST['idproj'])){
 	$posteur_email = $_POST['email'];
 	$posteur_msg = $_POST['contenu'];
 	$idproj = $_POST['idproj'];
@@ -27,10 +27,16 @@ if(!isset($erreur)){
 	$rs->execute() or die ("Erreur : ".__LINE__." : ".$sql);
 	$nb_lignes = $rs->rowCount();
 	if($nb_lignes){
-
+		echo "Success";
 	} else{
-		
+		echo "Failed";
 	}
+}*/
+
+if(true){
+	echo "Success";
+} else {
+	echo "Failed";
 }
 
 ?>

@@ -11,7 +11,8 @@
   </head>
   <body>
     <div id="erreur">
-      <p id="texterreur">Les champs suivants ne sont pas correctement remplis</p>
+    </div>
+    <div id="resultat">
     </div>
     <form id="formcontact">
       <div id="formcontact-intro" class="row">
@@ -57,13 +58,16 @@
           $msg_personne = $('#posteur_message'),
           $champ = $('.champ'),
           $erreur = $('#erreur'),
-          $envoi = $('#envoyer');
+          $resultat = $('#resultat'),
+          $envoi = $('#envoyer'),
+          $id = '<?php echo $id; ?>';
+          $dest = $('#dest_msg option:selected').val();
       // Ajustement de la taille des textarea
      /* $('textarea').autosize();*/
 
       // affichage du formulaire
       $('#dest_msg').change(function(){
-        var $dest = $('#dest_msg option:selected').val();
+        $dest = $('#dest_msg option:selected').val();
         $('html, body').animate({ /* ajuste l'écran sur l'ouverture du formulaire */
               scrollTop: $("#formcontact").offset().top
           }, 1000);
@@ -83,25 +87,56 @@
       $envoi.click(function(e) {
         e.preventDefault(); // on annule la fonction par défaut du bouton d'envoi
         $erreur.css('display','none');
+        $resultat.css('display','none');
         var nom = verifier($nom_personne);
         var mail = verifier($mail_personne);
-        var msg = verifier($msg_personne);
         var mailok = validateEmail($mail_personne);
+        var msg = verifier($msg_personne);
 
         if(nom && mail && msg && mailok){
-          alert("ok");
-          /* $.ajax({
-          url: 'traitement_formulaire.php', // ressource ciblée
-          type: 'POST',  // type de la requete HTTP
-          data : 'dest='+ $dest +'&email=' + $mail_personne.val() +'&contenu='+ $msg_personne.val() +'&idproj=' + $id,   // ligne A CHECK
-          dataType : 'html' // le type de données à recevoir
-        });*/
+         	$.post(
+	          'traitement_formulaire.php',
+	          {
+	          	nom : $nom_personne.val(), // données envoyées au fichier ci-dessus
+	          	prenom : $prenom_personne.val(),
+	          	mail : $mail_personne.val(),
+	          	message : $msg_personne.val(),
+	          	id : $id, // id du projet
+	          	destinataire : $dest
+	          },
+	          function(data){ // fonction qui va gérer le retour
+	          	if(data == 'Success'){
+	          		$resultat.html("<p>Le mail a été envoyé avec succès ! </p>");
+	          		$resultat.css('display','block');
+	          	}
+	          	else{
+	          		$resultat.html("<p>Erreur...</p>");
+	          		$resultat.css('display','block');
+	          	}
+	          },
+	          'text' // Format des données reçues : pour recevoir "Success" ou "Failed"
+	         );
+
+	         // data : 'dest='+ $dest +'&email=' + $mail_personne.val() +'&contenu='+ $msg_personne.val() +'&idproj=' + $id,   // ligne A CHECK
+	         
+	          /*success : function(code_html, statut){
+	          	//$(code_html).appendTo("#commentaires");
+	          },
+
+	          error : function(resultat, statut, erreur){
+
+	          },
+
+	          complete : function(resultat, statut){
+
+	          }*/
         }
       });
 
       function verifier(champ){  // vérification remplissage des champs
         var bool = true;
         if(champ.val() == ""){
+          $erreur.html("<p>Les champs avec * sont obligatoires.</p>");
           $erreur.css('display','block');
           champ.css({
             borderColor:'red'
@@ -115,6 +150,7 @@
         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         var bool = re.test(email.val());
         if(!bool){
+          $erreur.html("<p>L'adresse mail saisie n'est pas valide.</p>");
           $erreur.css('display','block');
           email.css({
             borderColor:'red'

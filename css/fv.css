@@ -423,6 +423,12 @@ textarea {
   color:red;
   text-align: center;
 }
+
+#resultat{
+  display: none;
+  color: green;
+  text-align: center;
+}
 /*element.style{
   top:100px;
 }*/
