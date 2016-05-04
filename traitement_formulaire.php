@@ -3,12 +3,6 @@ include "inc/_var_fv.php";
 
 
 unset($erreur);
-/*$posteur_email = preg_replace("/[^a-z].-_@/i",'', strtolower($_POST["posteur_email"]));
-if (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#i", $posteur_email))
-{
-  $erreur = true;
-  $erreurmsg = "Adresse email invalide.";  
-}*/
 
 if (isset($_POST['destinataire']) && isset($_POST['nom']) && isset($_POST['mail']) && isset($_POST['message']) && isset($_POST['id'])){
 	$destinataire = $_POST['destinataire'];
@@ -16,6 +10,10 @@ if (isset($_POST['destinataire']) && isset($_POST['nom']) && isset($_POST['mail'
 	$posteur_email = $_POST['mail'];
 	$posteur_msg = $_POST['message'];
 	$idproj = $_POST['id'];
+	if (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#i", preg_replace("/[^a-z].-_@/i",'', strtolower($posteur_email)))){ // vérification validité adresse mail saisie dans form
+		$erreur = "Erreur formulaire";
+		echo $erreur;
+	}
 }
 else {
 	$erreur = "Erreur formulaire";
@@ -30,8 +28,43 @@ if(!isset($erreur)){
 	$nb_lignes = $rs->rowCount();
 	if($nb_lignes){
 		$res = $rs->fetch();
-		echo "Success ".$res[0];
-	} else{
+		$mail = $res[0];
+		// Vérification validité adresse mail récupérée
+		if (!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#i", preg_replace("/[^a-z].-_@/i",'', strtolower($mail)))){
+			echo "Failed";
+		}
+		else {
+			if (!preg_match("#^[a-z0-9._-]+@(hotmail|live|msn).[a-z]{2,4}$#", $mail)){
+				$passage_ligne = "\r\n";
+			}
+			else {
+				$passage_ligne = "\n";
+			}
+			// ===== Déclaration des messages au format texte et au format HTML
+			$message_txt = "Salut à tous, voici un mail envoyé par un script PHP";
+			$message_html = "<html><head></head><body><b>Salut à tous</b>, voici un e-mail envoyé par un <i>script PHP</i>.</body></html>";
+			// ======================================
+
+			// ====== Création de la boundary
+			$boundary = "-----=".md5(rand());
+			// ======================================
+			
+			// ====== Création du header du mail ====
+			$header = "From \"Simon\"<savornin@msn.com>".$passage_ligne;
+			$header.= "Reply-to: \"Simon\" <savornin@msn.com>".$passage_ligne; 
+			$header.= "MIME-Version: 1.0".$passage_ligne;
+			$header.= "Content-Type: multipart/alternative;".$passage_ligne."boundary=\"$boundary\"".$passage_ligne;
+			// =======================================
+			$message = "...";
+			$message .= "Content-Type: text/html; charset=\"ISO-8859-1\"".$passage_ligne;
+			$message .= "Content-Transfer-Encoding: 8bit".$passage_ligne;
+			$message .= "...";
+
+			$boundary = "-----=".md5(rand());
+			echo "Success";
+		}
+	} 
+	else{
 		echo "Failed";
 	}
 }

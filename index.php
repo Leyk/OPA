@@ -62,13 +62,11 @@
     </section>
 
       <div id="myVolet" class="hide reveal-modal medium" data-reveal>
-       <!-- <a class="close-reveal-modal" aria-label="Close">&#215;</a>-->
       </div>
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="js/foundation.min.js"></script>
-    <script src="js/foundation/foundation.reveal.js"></script>
     <script src="js/foundation/foundation.tooltip.js"></script>
     <script>
       $(document).foundation();
@@ -110,27 +108,17 @@
             .append("g")  /* pour grouper */
             .attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
 
-        //d3.json("flare.json", function (error, root) {
-            //if (error) return console.error(error);
-
             var focus = root,   /* focus initial sur le root (variable contenant tout l'arbre de données) */
                 nodes = pack.nodes(root),
                 view;
 
             var circle = svg.selectAll("circle")
                 .data(nodes)
-                .enter().append("a")
-                .attr('xlink:href',function(d) { return d.url ;})
-                .attr('data-reveal-id', function(d) {
-                  return d.parent ? d.children ? "" : "myVolet" : "";
-                })
-                .attr('data-reveal-ajax',function(d){
-                  return d.parent ? d.children ? "" : "true" : "";
-                })
+                .enter()
                 .append("circle")
                 .attr("class", function (d) {
                 return d.parent ? d.children ? "node" : "node node--leaf" : "node node--root";
-          /* si le cercle a un parent mais pas d'enfant = feuille ; si enfant mais pas parent = root si enfant et parent = noeud */
+               /* si le cercle a un parent mais pas d'enfant = feuille ; si enfant mais pas parent = root si enfant et parent = noeud */
 
             })
                 .style("fill", function (d) {
@@ -141,6 +129,7 @@
 
                 function clickFct(d,i) {  /* i = place dans l'arbre Json (0 = forcesvives = root)*/
                   if(d3.select(this).classed("node--leaf")){
+                   $('#myVolet').foundation('reveal', 'open', d.url);  // ouverture du volet avec les infos de la fiche
                     if (focus !== d){  /* si on n'est pas centré sur le focus, on zoom dessus */
                       zoom(d.parent);
                       d3.event.stopPropagation();  /* fonction qui permet le zoom */
@@ -164,31 +153,29 @@
                 .style("display", function (d) {
                 return d.parent === root ? null : "none";
             })
-                .text(function (d) {  /* on insère le texte seulement pour les noeuds non feuilles */
+                .text(function (d) {  
                   var thisNode = d3.select(this);
-                  if(d.children){
+                 // if(d.children){
                     return d.name;
-                  }
+                 // }
                 
             });
 
             var node = svg.selectAll("circle,text");
 
-             /* permet d'affecter les text en hyperlink pour chaque noeud feuille (action) */
-           node.each(function(d) {
+          /* permet d'affecter les text en hyperlink pour chaque noeud feuille (action) : penser à modifier le CSS en conséquence */
+          /* node.each(function(d) {
               var thisNode = d3.select(this);
-              if (!d.children) {   /* si c'est une feuille */
+              if (!d.children) {   //si c'est une feuille 
                 if(d.url !== undefined) {
                   thisNode.append("a")
                   .attr('xlink:href',function(d) { return d.url ;})
                   .attr('data-reveal-id','myVolet')
                   .attr('data-reveal-ajax','true')
                     .text(function(d){return d.name;});
-                    /*alert(thisNode.data-reveal-id);*/
-                   /* thisNode.setAttribute('data-reveal-ajax','true')*/
                 }            
               }
-            });
+            });*/
 
             d3.select("body")
                 .style("background", color(-2))  /* change la couleur du fond avec une couleur proche du cercle root */
